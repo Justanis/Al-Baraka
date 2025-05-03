@@ -1,0 +1,62 @@
+// // apiService.js
+
+// // This creates a namespace called ApiService to group all API-related functions.
+// // It's an Immediately Invoked Function Expression (IIFE), meaning it runs as soon as it's defined.
+// var ApiService = (function () {
+  
+//   // This is the base URL where your Flask backend is running.
+//   // Change this to match your server address if it's deployed somewhere else.
+//   var baseUrl = 'http://localhost:5000';
+  
+//   // This is a private helper function to send AJAX requests.
+//   // method: 'GET', 'POST', etc.
+//   // endpoint: the API path (like '/login')
+//   // data: the data to send (for POST requests)
+//   // onSuccess: function to run when request succeeds
+//   // onError: function to run if there's an error
+//   function sendRequest(method, endpoint, data, onSuccess, onError) {
+//     $.ajax({
+//       url: baseUrl + endpoint,          // Full API URL (e.g., http://localhost:5000/login)
+//       type: method,                     // HTTP method (POST, GET, etc.)
+//       data: JSON.stringify(data),       // Convert data to JSON string
+//       contentType: 'application/json',  // Tell server the request body is JSON
+//       dataType: 'json',                 // Expect JSON back from the server
+//       success: onSuccess,               // Call this function if request is successful
+//       error: onError                    // Call this function if request fails
+//     });
+//   }
+
+//   // This object is returned and becomes the public interface for ApiService.
+//   // You can call ApiService.signup(...), ApiService.login(...), etc.
+//   return {
+//     // Signup method: sends user data to /users endpoint via POST
+//     signup: function (userData, onSuccess, onError) {
+//       sendRequest('POST', '/users', userData, onSuccess, onError);
+//     },
+//     // Login method: sends login credentials to /login via POST
+//     login: function (userData, onSuccess, onError) {
+//       sendRequest('POST', '/login', userData, onSuccess, onError);
+//     },
+//     // Confirm Email method: sends confirmation data to /users/confirm
+//     confirmEmail : function (userData, onSuccess, onError){
+//       sendRequest('POST', '/users/confirm', userData, onSuccess, onError);
+//     },
+//     // Get User method: gets user info from /users/:userID
+//     getUser : function (userID, onSuccess, onError){
+//       // Note: for GET requests, the `data` argument is not used in this case.
+//       sendRequest('GET', `/users/${userID}`, userID, onSuccess, onError);
+//     }
+
+//     // You can add more methods here for other API endpoints like logout, update user, etc.
+//   };
+// })();
+
+
+// In Short:
+// ApiService is like a toolbox that helps your frontend communicate with your Flask backend.
+
+// It wraps multiple API methods like signup, login, confirmEmail, and getUser.
+
+// Each method internally uses sendRequest() to make an AJAX call to your Flask server.
+
+// Let me know if you'd like help using this in your frontend or if you're wondering how to handle responses/errors!
