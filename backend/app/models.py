@@ -4,13 +4,13 @@ class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     # fullName  = db.Column(db.String(50), unique=False, nullable=True)
-    firstName = db.Column(db.String(50), unique=False, nullable=True) # REQUIRED
-    lastName = db.Column(db.String(50), unique=False, nullable=True) # REQUIRED
+    firstName = db.Column(db.String(50), unique=False, nullable=True)
+    lastName = db.Column(db.String(50), unique=False, nullable=True)
     userName = db.Column(db.String(50), unique=True, nullable=False) # REQUIRED
     age = db.Column(db.Integer, unique=False, nullable=True)
     
     # contact infos
-    email = db.Column(db.String(100), unique=True, nullable=False)# REQUIRED
+    email = db.Column(db.String(100), unique=True, nullable=False) # REQUIRED
     phone = db.Column(db.String(100), unique=False, nullable=True)
     password = db.Column(db.String(250), nullable=False) # REQUIRED
     adresse = db.Column(db.String(250), nullable=True)
@@ -25,7 +25,7 @@ class User(db.Model):
     def to_dict(self):
         """Convert the User object to a dictionary."""
         return {
-            "id": self.id,
+            # "id": self.id,
             "firstName": self.firstName,
             "lastName": self.lastName,
             # "fullName": self.fullName,
@@ -37,7 +37,7 @@ class User(db.Model):
             "adresse": self.adresse,
             "isConfirmed": self.isConfirmed,
             "confirmationCode": self.confirmationCode,
-            "profileImage": self.profileImage
+            # "profileImage": self.profileImage
         }
 
     def ValidateUserData(UserData):

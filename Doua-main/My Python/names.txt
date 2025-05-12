@@ -1,0 +1,6 @@
+& C:/Users/cortec/AppData/Local/Programs/Python/Python313/python.exe "c:/Users/cortec/Desktop/My Python/exofi1.py"
+doua
+mihi
+hou
+gh
+v

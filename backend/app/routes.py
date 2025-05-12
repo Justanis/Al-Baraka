@@ -1,7 +1,11 @@
+import os
 from flask import Blueprint, request, jsonify, current_app 
 from . import db
 from .models import User
 from .utils import generate_confirmation_code
+from flask import session
+from flask import send_from_directory
+
 api_bp = Blueprint('api', __name__)
 
 # GET /api/users - Retrieve all users
@@ -79,55 +83,58 @@ def update_user(user_id):
     return jsonify(user.to_dict())
 
 # DELETE /api/users/<user_id> - Delete a user
-@api_bp.route('/users/<int:user_id>', methods=['DELETE'])
+@api_bp.route('/logout/<int:user_id>', methods=['DELETE'])
 def delete_user(user_id):
     user = User.query.get_or_404(user_id)
     db.session.delete(user)
     db.session.commit()
     return jsonify({"message": "User deleted"}), 200
 
-@api_bp.route('/login',methods=['POST'])
+# GET /api/logout - Logout the user
+@api_bp.route('/logout', methods=['GET'])
+def logout():
+    print("Logout route hit")  # Debug statement
+    session.clear()
+    base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../frontend'))
+    print(f"Resolved path: {base_dir}")  # Debug statement
+    return send_from_directory(base_dir, 'index.html')
+
+# POST /api/login - User login
+@api_bp.route('/login', methods=['POST'])
 def login():
     data = request.get_json()
     user = User.query.filter_by(email=data["email"]).first()
-    realPassword = user.password
-    requestpassword = data['password']
-    if requestpassword == realPassword :
+    
+    if not user:
         return jsonify({
-            'status' : 200,
+            'status': 401,
+            'error': "User not found",
+        }), 401
+    
+    if data['password'] == user.password:
+        return jsonify({
+            'status': 200,
             'user': user.to_dict(),
         })
     else:
         return jsonify({
-            'status' : 401,
-            'error': "Invalid Informations" ,
-        })
-    
-# @app.route('/reset_password/<token>', methods=['GET', 'POST'])
-# def reset_password(token):
-#     s = Serializer(app.config['SECRET_KEY'])
+            'status': 401,
+            'error': "Invalid credentials",
+        }), 401
 
-#     try:
-#         # Validate the token
-#         data = s.loads(token)
-#     except Exception as e:
-#         return jsonify({'error': 'The reset link is invalid or expired.'}), 400
-
-#     user_email = data['email']
-#     user = User.query.filter_by(email=user_email).first()  # Find user by email
-
-#     if not user:
-#         return jsonify({'error': 'User not found'}), 404
-
-#     if request.method == 'POST':
-#         new_password = request.form['password']
-
-#         # Update the user's password in the database (make sure to hash it!)
-#         user.password = hash_password(new_password)  # Replace with actual password hashing logic
-#         db.session.commit()  # Commit the changes to the database
-
-#         return redirect('/login')  # Redirect the user to the login page
-
-#     # If it's a GET request, render a password reset form
-#     return render_template('reset_password.html', token=token)
-
+# @api_bp.route('/login',methods=['POST'])
+# def login():
+#     data = request.get_json()
+#     user = User.query.filter_by(email=data["email"]).first()
+#     realPassword = user.password
+#     requestpassword = data['password']
+#     if requestpassword == realPassword :
+#         return jsonify({
+#             'status' : 200,
+#             'user': user.to_dict(),
+#         })
+#     else:
+#         return jsonify({
+#             'status' : 401,
+#             'error': "Invalid Informations" ,
+#         })

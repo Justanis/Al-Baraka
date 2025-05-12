@@ -1,0 +1,3 @@
+doua,19
+manar,17
+hiba,16
