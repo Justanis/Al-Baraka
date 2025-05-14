@@ -13,10 +13,6 @@ function getUser() {
   return JSON.parse(localStorage.getItem("user"));
 }
 
-function logOut(){
-  localStorage.removeItem("user");
-}
-
 
 
 // Check if user is logged in
@@ -32,8 +28,17 @@ function isConfirmed(){
   }
 }
 
+function logOut(){
+  localStorage.removeItem("user");
+}
 
-// // Redirect to another HTML page
+  function logOut(){
+    localStorage.clear();
+    window.location.reload();
+  }
+
+
+  // // Redirect to another HTML page
 // function redirectTo(page) {
 //     window.location.href = page;
 //   }
@@ -47,11 +52,6 @@ function isConfirmed(){
 //   function getUser() {
 //     return JSON.parse(localStorage.getItem("user"));
 //   }
-
-  function logOut(){
-    localStorage.clear();
-    window.location.reload();
-  }
 
 
   
