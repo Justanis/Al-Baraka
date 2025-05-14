@@ -1,5 +1,5 @@
 import os
-from flask import Blueprint, request, jsonify, current_app 
+from flask import Blueprint, render_template, request, jsonify, current_app 
 from . import db
 from .models import User
 from .utils import generate_confirmation_code
@@ -91,13 +91,13 @@ def delete_user(user_id):
     return jsonify({"message": "User deleted"}), 200
 
 # GET /api/logout - Logout the user
-@api_bp.route('/logout', methods=['GET'])
-def logout():
-    print("Logout route hit")  # Debug statement
-    session.clear()
-    base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../frontend'))
-    print(f"Resolved path: {base_dir}")  # Debug statement
-    return send_from_directory(base_dir, 'index.html')
+# @api_bp.route('/logout', methods=['GET'])
+# def logout():
+#     print("Logout route hit")  # Debug statement
+#     session.clear()
+#     base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../frontend'))
+#     print(f"Resolved path: {base_dir}")  # Debug statement
+#     return render_template('login.html)
 
 # POST /api/login - User login
 @api_bp.route('/login', methods=['POST'])
@@ -121,6 +121,10 @@ def login():
             'status': 401,
             'error': "Invalid credentials",
         }), 401
+
+
+
+
 
 # @api_bp.route('/login',methods=['POST'])
 # def login():

@@ -48,9 +48,10 @@ function isConfirmed(){
 //     return JSON.parse(localStorage.getItem("user"));
 //   }
 
-//   function logOut(){
-//     localStorage.removeItem("user");
-//   }
+  function logOut(){
+    localStorage.clear();
+    window.location.reload();
+  }
 
 
   
