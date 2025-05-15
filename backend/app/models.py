@@ -45,4 +45,28 @@ class User(db.Model):
             if  UserData['userName'] != '' and UserData['email'] != '' and UserData['password'] != '':
                 return True
         return False
-         
+
+    # trying to add something for my self => check it later
+class Volunteer(db.Model):
+    __tablename__ = 'volunteers'  # Use double underscores and a plural table name
+
+    id = db.Column(db.Integer, primary_key=True)
+    firstName = db.Column(db.String(50), unique=False, nullable=True)
+    lastName = db.Column(db.String(50), unique=False, nullable=True)
+    email = db.Column(db.String(100), unique=True, nullable=True)
+    age = db.Column(db.Integer, unique=False, nullable=True)
+    phonenumber = db.Column(db.String(100), unique=False, nullable=True)
+    gender = db.Column(db.String(20), unique=False, nullable=True)
+    city = db.Column(db.String(100), unique=False, nullable=True)
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "firstName": self.firstName,
+            "lastName": self.lastName,
+            "gender": self.gender,
+            "age": self.age,
+            "email": self.email,
+            "phonenumber": self.phonenumber,
+            "city": self.city
+        }

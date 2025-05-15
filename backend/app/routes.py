@@ -1,10 +1,8 @@
-import os
-from flask import Blueprint, render_template, request, jsonify, current_app 
+from flask import Blueprint, request, jsonify, current_app 
 from . import db
 from .models import User
+from .models import Volunteer
 from .utils import generate_confirmation_code
-from flask import session
-from flask import send_from_directory
 
 api_bp = Blueprint('api', __name__)
 
@@ -123,7 +121,43 @@ def login():
         }), 401
 
 
+    # trying to add something for my self => check it later
+# GET /api/volunteers - Retrieve all volunteers
+@api_bp.route('/volunteers', methods=['GET'])
+def get_volunteers():
+    volunteers = Volunteer.query.all()
+    return jsonify([v.to_dict() for v in volunteers])
 
+# GET /api/volunteers/<int:volunteer_id> - Retrieve a specific volunteer
+@api_bp.route('/volunteers/<int:volunteer_id>', methods=['GET'])
+def get_volunteer(volunteer_id):
+    volunteer = Volunteer.query.get_or_404(volunteer_id)
+    return jsonify(volunteer.to_dict())
+
+# POST /api/volunteers - Create a new volunteer
+@api_bp.route('/volunteers', methods=['POST'])
+def create_volunteer():
+    data = request.get_json()
+    new_volunteer = Volunteer(
+        firstName=data.get('firstName'),
+        lastName=data.get('lastName'),
+        email=data.get('email'),
+        age=data.get('age'),
+        phonenumber=data.get('phonenumber'),
+        gender=data.get('gender'),
+        city=data.get('city')
+    )
+    db.session.add(new_volunteer)
+    db.session.commit()
+    return jsonify(new_volunteer.to_dict()), 201
+
+# DELETE /api/volunteers/<int:volunteer_id> - Delete a volunteer
+@api_bp.route('/volunteers/<int:volunteer_id>', methods=['DELETE'])
+def delete_volunteer(volunteer_id):
+    volunteer = Volunteer.query.get_or_404(volunteer_id)
+    db.session.delete(volunteer)
+    db.session.commit()
+    return jsonify({"message": "Volunteer deleted"}), 200
 
 
 # @api_bp.route('/login',methods=['POST'])
