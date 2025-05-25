@@ -1,170 +1,109 @@
-//card animation about us
+// card animation about us
 AOS.init({
-    duration: 1000,
-    once: true
-   });
-   //card animation about us end
-   
-   //animation about us photo
-      
-       const observer = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-               entry.target.classList.add('visible');
-            }
-           });
-       });
-       document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
-   //animation about us photo end
+  duration: 1000,
+  once: true
+});
 
-   // donate-script.js
-   
-   const donationButtons = document.querySelectorAll('.donation-type-btn');
-   const donationSections = document.querySelectorAll('.donation-section');
-   
-   // Function to toggle donation sections
-   function toggleDonationSection(type) {
-     donationButtons.forEach(btn => btn.classList.remove('active'));
-     donationSections.forEach(sec => sec.style.display = 'none');
-   
-     const targetSection = document.getElementById(type);
-     if (targetSection) {
-       targetSection.style.display = 'block';
-     }
-   }
-   
-   // Function to handle cloning and modification of the form
-   function handleFormClone(type) {
-     const monthlyForm = document.querySelector('#monthly .donation-form-content').cloneNode(true);
-   
-     const targetSection = document.getElementById(type);
-     targetSection.innerHTML = '';
-     targetSection.appendChild(monthlyForm);
-   
-     if (type === 'general') {
-       const purposeField = targetSection.querySelector('.purpose-field');
-       if (purposeField) purposeField.remove();
-     }
-   
-     handlePaymentToggle(targetSection);
-     handleAmountSelection(targetSection);
-   }
-   
-   // Handle Payment Method Toggle
-   function handlePaymentToggle(section) {
-     const methodSelect = section.querySelector('.payment-method');
-     const paypalInfo = section.querySelector('.paypal-info');
-     const ccpInfo = section.querySelector('.ccp-info');
-     const bankInfo = section.querySelector('.bank-info');
-   
-     paypalInfo.style.display = 'none';
-     ccpInfo.style.display = 'none';
-     bankInfo.style.display = 'none';
-   
-     methodSelect.addEventListener('change', function () {
-       paypalInfo.style.display = 'none';
-       ccpInfo.style.display = 'none';
-       bankInfo.style.display = 'none';
-   
-       if (this.value === 'paypal') {
-         paypalInfo.style.display = 'block';
-       } else if (this.value === 'ccp') {
-         ccpInfo.style.display = 'block';
-       } else if (this.value === 'bank') {
-         bankInfo.style.display = 'block';
-       }
-     });
-   }
-   
-   // Handle Amount Selection
-   function handleAmountSelection(section) {
-     const amountButtons = section.querySelectorAll('.amount-btn');
-     const customInput = section.querySelector('.custom-amount-input');
-   
-     amountButtons.forEach(button => {
-       button.addEventListener('click', () => {
-         const amount = button.getAttribute('data-amount');
-         customInput.value = amount;
-         amountButtons.forEach(b => b.classList.remove('selected'));
-         button.classList.add('selected');
-       });
-     });
-   }
-   
-   // Event Listener for Donation Buttons
-   
-   donationButtons.forEach(btn => {
-     btn.addEventListener('click', () => {
-       const type = btn.dataset.type;
-   
-       btn.classList.add('active');
-       toggleDonationSection(type);
-       handleFormClone(type);
-     });
-   });
-   // Initialize Monthly Section
-   // Remove all sections initially
-     donationSections.forEach(sec => sec.style.display = 'none');
-
-
-
-
-
-
-//donation in algeria//
-     document.addEventListener("DOMContentLoaded", () => {
-  const donationButtons = document.querySelectorAll(".donation-type-btn");
-  const donationSections = document.querySelectorAll(".donation-section");
-
-  function toggleDonationSection(type) {
-    donationSections.forEach(section => (section.style.display = "none"));
-    const targetSection = document.getElementById(type);
-    if (targetSection) targetSection.style.display = "block";
-  }
-
-  function handlePaymentToggle(section) {
-    const methodSelect = section.querySelector("#payment-method");
-    const ccpInfo = section.querySelector("#ccp-info");
-    const bankInfo = section.querySelector("#bank-info");
-    if (methodSelect) {
-      ccpInfo && (ccpInfo.style.display = "none");
-      bankInfo && (bankInfo.style.display = "none");
-      methodSelect.addEventListener("change", () => {
-        ccpInfo && (ccpInfo.style.display = "none");
-        bankInfo && (bankInfo.style.display = "none");
-        if (methodSelect.value === "ccp") ccpInfo.style.display = "block";
-        else if (methodSelect.value === "bank") bankInfo.style.display = "block";
-      });
-    }
-  }
-
-  function handleAmountSelection(section) {
-    const amountButtons = section.querySelectorAll(".amount-btn");
-    const customInput = section.querySelector(".custom-amount-input");
-    if (amountButtons && customInput) {
-      amountButtons.forEach(button => {
-        button.addEventListener("click", () => {
-          customInput.value = button.dataset.amount;
-          amountButtons.forEach(b => b.classList.remove("selected"));
-          button.classList.add("selected");
-        });
-      });
-    }
-  }
-
-  donationButtons.forEach(button => {
-    button.addEventListener("click", () => {
-      const type = button.dataset.type;
-      donationButtons.forEach(btn => btn.classList.remove("active"));
-      button.classList.add("active");
-      toggleDonationSection(type);
-      const section = document.getElementById(type);
-      if (section) {
-        handlePaymentToggle(section);
-        handleAmountSelection(section);
-      }
-    });
+// animation about us photo
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
   });
+});
+document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
 
-  donationSections.forEach(section => (section.style.display = "none"));
+
+// donation toggle logic for both “in” and “out”
+function initDonationGroup(suffix) {
+  const btnClass     = `.donation-type-btn-${suffix}`;    // .donation-type-btn-in / -out
+  const sectionClass = `.donation-section-${suffix}`;     // .donation-section-in / -out
+
+  const $buttons  = $(btnClass);
+  const $sections = $(sectionClass);
+
+  $sections.hide();
+  $buttons.on('click', function() {
+    const type     = $(this).data('type');               // monthly / directed / general
+    const targetId = `#${type}-${suffix}`;
+    const $target  = $(targetId);
+
+    $buttons.removeClass('active');
+    $(this).addClass('active');
+
+    $sections.hide();
+    if (!$target.length) return;
+
+    $target.show();
+    $('html, body').animate({ scrollTop: $target.offset().top }, 400);
+  });
+}
+
+
+// delegate payment-method changes
+$(document).on('change', 'select.payment-method', function() {
+  const $form = $(this).closest('form');
+  $form.find('.payment-info').hide();
+
+  const v = this.value.toLowerCase();
+  if (v === 'paypal') {
+    $form.find('.paypal-info').show();
+  } else if (v === 'ccp') {
+    $form.find('.ccp-info').show();
+  } else if (v === 'bank' || v === 'bank transfer' || v === 'bank card') {
+    $form.find('.bank-info').show();
+  }
+});
+
+// delegate amount-button clicks
+$(document).on('click', '.amount-btn', function(e) {
+  e.preventDefault();
+  const amount = $(this).data('amount');
+  const $form = $(this).closest('form');
+  $form.find('.custom-amount-input').val(amount);
+  $form.find('.amount-btn').removeClass('selected');
+  $(this).addClass('selected');
+});
+
+
+// PDF generation on form submit
+$(function() {
+  const { jsPDF } = window.jspdf;
+
+    $('form[id^="form-"]').on('submit', function(e) {
+      e.preventDefault();
+      
+      // determine in/out from form ID
+      const formId = this.id; // e.g. "form-general-in" or "form-directed-out"
+      const isIn    = formId.endsWith('-in');
+      const region  = isIn ? 'In Algeria' : 'Out Algeria';
+      
+      // grab only non‐empty fields
+      const entries = $(this).serializeArray()
+        .filter(({ value }) => value.trim() !== '');
+
+      const doc = new jsPDF();
+      // big title: region + “Donation Receipt”
+      doc.setFontSize(18);
+      doc.text(`${region} Donation Receipt`, 20, 20);
+
+      // now list the fields
+      doc.setFontSize(12);
+      let y = 30;
+      entries.forEach(({ name, value }) => {
+        doc.text(`${name}: ${value}`, 20, y);
+        y += 8;
+        if (y > 280) {
+          doc.addPage();
+          y = 20;
+        }
+      });
+
+      doc.save(`donation_receipt_${region.replace(' ','_').toLowerCase()}_${Date.now()}.pdf`);
+    });
+
+
+
+  // wire up the in/out groups after DOM ready
+  initDonationGroup('in');
+  initDonationGroup('out');
 });

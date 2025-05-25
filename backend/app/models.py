@@ -31,6 +31,8 @@ class User(db.Model):
         'ContactMessage', back_populates='user', lazy='dynamic'
     )
 
+    transfers = relationship('Transfer', back_populates='user', lazy='dynamic')
+
     @property
     def is_volunteer(self) -> bool:
         """Return True if this user has a Volunteer record."""
@@ -106,4 +108,39 @@ class ContactMessage(db.Model):
             "user_id": self.user_id,
             "message": self.message,
             "created_at": self.created_at.isoformat()
+        }
+    
+# new table for payment methods
+class PaymentMethod(db.Model):
+    __tablename__ = 'payment_methods'
+    id    = db.Column(db.Integer, primary_key=True)
+    name  = db.Column(db.String(50), unique=True, nullable=False)
+
+    # default methods will be seeded via migration or startup script
+    transfers = relationship('Transfer', back_populates='method', lazy='dynamic')
+
+    def to_dict(self):
+        return {"id": self.id, "name": self.name}
+    
+# transfers table linking user and payment_methods
+class Transfer(db.Model):
+    __tablename__ = 'transfers'
+    id                = db.Column(db.Integer, primary_key=True)
+    user_id           = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    method_id         = db.Column(db.Integer, db.ForeignKey('payment_methods.id'), nullable=False)
+    amount            = db.Column(db.Numeric(10,2), nullable=False)
+    transaction_date  = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    details           = db.Column(db.Text, nullable=True)
+
+    user   = relationship('User', back_populates='transfers')
+    method = relationship('PaymentMethod', back_populates='transfers')
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "method_id": self.method_id,
+            "amount": float(self.amount),
+            "transaction_date": self.transaction_date.isoformat(),
+            "details": self.details
         }
