@@ -570,7 +570,8 @@ button:hover {
 button:active {
   background-color: #095322;
 }
-form {
+
+.form-style {
   max-width: 600px;
   margin: 50px auto;
   padding: 20px;
