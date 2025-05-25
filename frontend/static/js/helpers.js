@@ -100,4 +100,12 @@ function logOut(){
  
 
 
-  
+const donationSectionToggler = (inAlgeria) => {
+if(!inAlgeria){
+  $("#donation-section-inalgeria").hide();
+  $("#donation-section-outalgeria").show();
+}else{
+  $("#donation-section-inalgeria").show();
+  $("#donation-section-outalgeria").hide();
+}
+}

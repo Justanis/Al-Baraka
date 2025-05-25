@@ -1,5 +1,6 @@
 from . import db
 from sqlalchemy.orm import relationship
+from datetime import datetime
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -23,6 +24,11 @@ class User(db.Model):
         'Volunteer',
         back_populates='user',
         uselist=False
+    )
+
+    # 1-to-many relationship to ContactMessage
+    messages = relationship(
+        'ContactMessage', back_populates='user', lazy='dynamic'
     )
 
     @property
@@ -82,4 +88,22 @@ class Volunteer(db.Model):
             "firstResponse": self.firstResponse,
             "secondResponse": self.secondResponse,
             # …etc… 
+        }
+    
+class ContactMessage(db.Model):
+    __tablename__ = 'contact_messages'
+
+    id         = db.Column(db.Integer, primary_key=True)
+    user_id    = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    message    = db.Column(db.Text, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+
+    user       = relationship('User', back_populates='messages')
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "message": self.message,
+            "created_at": self.created_at.isoformat()
         }
