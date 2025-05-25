@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify, current_app 
 from . import db
-from .models import User
+from .models import ContactMessage, User
 from .models import Volunteer
 from .utils import generate_confirmation_code
 
@@ -225,3 +225,18 @@ def check_volunteer():
             'status': 200,
             'is_volunteer': False
         })
+
+@api_bp.route('/contact_messages', methods=['POST'])
+def add_contact_message():
+    data = request.get_json() or {}
+
+    # 3) Create and save the message
+    msg = ContactMessage(user_id=data["user_id"], message=data["message"])
+    db.session.add(msg)
+    db.session.commit()
+
+    # 4) Return the created record
+    return jsonify({
+        'status': 201,
+        'contact_message': msg.to_dict()
+    }), 201

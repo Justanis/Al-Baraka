@@ -21,6 +21,8 @@
 
 
     <link rel="stylesheet" href="../static/css/test.css">
+    <script src="../static/js/helpers.js"></script>
+
 </head>
 <body>
 
@@ -41,8 +43,8 @@
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="donateDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Donate</a>
                 <ul class="dropdown-menu" aria-labelledby="donateDropdown">
-                    <li><a class="dropdown-item" href="#donation-section-inalgeria">In Algeria</a></li>
-                    <li><a class="dropdown-item" href="#donation-section-outalgeria">Out Algeria</a></li>
+                    <li><a onclick="donationSectionToggler(true)"  href="#donation-section-inalgeria" class="dropdown-item" >In khalil Algeria</a></li>
+                    <li><a onclick="donationSectionToggler(false)" href="#donation-section-outalgeria" class="dropdown-item" >Out Algeria</a></li>
                 </ul>
               </li>
               <li class="nav-item"><a class="nav-link" href="#volunteering">Volunteering</a></li>
@@ -338,7 +340,7 @@
     </div>
 
     <!-- Monthly Donation (Hidden initially) -->
-    <div id="monthly" class="donation-section" style="display: none;">
+    <div id="monthly-in" class="donation-section-in donation-section" style="display: none;">
       <h4>Monthly Donation :</h4>
       <br>
       <div class="input-box">
@@ -394,7 +396,7 @@
     </div>
 
     <!-- Targeted and General Donation (Hidden initially) -->
-    <div id="directed" class="donation-section" style="display: none;">
+    <div id="directed-in" class="donation-section-in donation-section" style="display: none;">
       <!-- Content for targeted donation can go here -->
       <h4>Directed Donation :</h4>
       <br>
@@ -459,7 +461,7 @@
     </div>
         
 
-    <div id="general" class="donation-section" style="display: none;">
+    <div id="general-in" class="donation-section-in donation-section" style="display: none;">
       <!-- Content for general donation can go here -->
       <h4>General Donation :</h4>
       <br>
@@ -513,6 +515,108 @@
   </div>
 </section>
  
+<!-- donate-out-algeria -->
+<section id="donation-section-outalgeria" style="display: none;">
+    <div class="container">
+      <h2 class=" section-title">Donate Out Algeria</h2>
+      <p class="text-center mb-5 lead donation-intro">
+        Your donation, no matter how small, can make a huge difference.  
+        <br>Choose the type of donation that suits you and start spreading hope today.
+      </p>
+      <div class="row text-center mb-4">
+        <div class="col-md-4">
+          <button class="donation-type-btn" data-type="monthly">
+            <h4>Monthly</h4>
+            <p>Every month, a portion of your donation will go to help a specific cause.</p>
+          </button>
+        </div>
+        <div class="col-md-4">
+          <button class="donation-type-btn" data-type="directed">
+            <h4>Directed</h4>
+            <p>Donate to a specific cause or charity, like building a school or hospital.</p>
+          </button>
+        </div>
+        <div class="col-md-4">
+          <button class="donation-type-btn" data-type="general">
+            <h4>General</h4>
+            <p>Your donation will be used where it's most needed.</p>
+          </button>
+        </div>
+      </div>
+      
+      
+      <div id="monthly-out" class="donation-section-out donation-section" style="display: none;">
+        <div class="donation-form-content">
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-select" placeholder="Enter your Email" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Select Beneficiary Country:</label>
+            <select class="form-select">
+              <option>Select</option>
+              <option>Palestine</option>
+              <option>Syria</option>
+              <option>Yemen</option>
+              <option>Sudan</option>
+              <option>Somalia</option>
+              <option>Libya</option>
+              <option>Bangladesh</option>
+              <option>Afghanistan</option>
+            </select>
+          </div>
+          <div class="mb-3 purpose-field">
+            <label class="form-label">Donation Purpose:</label>
+            <select class="form-select">
+              <option>Select</option>
+              <option>Orphan Sponsorship</option>
+              <option>Support a Family</option>
+              <option>Medical Supplies</option>
+              
+            </select>
+          </div>
+          <div class="mb-4">
+            <label class="form-label">Choose Donation Amount:</label>
+            <div class="d-flex gap-2 flex-wrap mb-2">
+              <button class="amount-btn" data-amount="500">500 DA</button>
+              <button class="amount-btn" data-amount="1000">1000 DA</button>
+              <button class="amount-btn" data-amount="10000">10000 DA</button>
+            </div>
+            <input type="number" class="custom-amount-input" placeholder="Or enter a custom amount" min="10">
+          </div>
+          <div class="mb-4">
+            <label class="form-label">Choose Payment Method:</label>
+            <select class="form-select payment-method">
+              <option value="">-- Select --</option>
+              <option value="paypal">PayPal</option>
+              <option value="ccp">ِCCP</option>
+              <option value="bank">ِBank Card</option>
+            </select>
+          </div>
+          <div class="payment-info paypal-info">
+            <input type="text" class="form-control mb-2" placeholder="Card Number">
+            <input type="text" class="form-control mb-2" placeholder="Security Code (CVV)">
+            <input type="text" class="form-control mb-2" placeholder="Expiration Date">
+          </div>
+          <div class="payment-info ccp-info">
+            <input type="text" class="form-control mb-2" placeholder="CCP Account Number">
+          </div>
+          <div class="payment-info bank-info">
+            <input type="text" class="form-control mb-2" placeholder="Card Number">
+            <input type="text" class="form-control mb-2" placeholder="Security Code (CVV)">
+            <input type="text" class="form-control mb-2" placeholder="Expiration Date">
+          </div>
+          <div class="text-center mt-4">
+            <button class="donate-btn">Donate Now</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="directed-out" class="donation-section-out donation-section" style="display: none;"></div>
+      <div id="general-out" class="donation-section-out donation-section" style="display: none;"></div>
+    </div>
+</section>
+
    <!--volunteering section-->
 <section class="volateering-section" id="volunteering">
   <div class="volateering-info">
@@ -675,20 +779,23 @@
         <div class="card shadow-sm p-4">
           <h5 class="fw-bold mb-3">Get In Touch</h5>
           
-            <div class="mb-3">
-              <label for="userName" class="form-label">Name : </label>
-              </label>
-              <input type="text" class="form-control" id="userName" placeholder="Enter your name">
-            </div>
-            <div class="mb-3">
-              <label for="userEmail" class="form-label">Email :</label>
-              <input type="email" class="form-control" id="userEmail" placeholder="Enter your email">
-            </div>
-            <div class="mb-3">
-              <label for="userMessage" class="form-label">Your Message :</label>
-              <textarea class="form-control" id="userMessage" rows="4" placeholder="Enter your message"></textarea>
-            </div>
-            <button type="submit" class="btn btn-success w-100">Send Message</button>
+          <form id="contactForm" action="">
+              <div class="mb-3">
+                <label for="userName" class="form-label">Name : </label>
+                </label>
+                <input  type="text" class="form-control" id="userNameContactInput" placeholder="Enter your name">
+              </div>
+              <div class="mb-3">
+                <label for="userEmail" class="form-label">Email :</label>
+                <input type="email" class="form-control" id="userEmailContactInput" placeholder="Enter your email">
+              </div>
+              <div class="mb-3">
+                <label for="userMessage" class="form-label">Your Message :</label>
+                <textarea class="form-control" id="userMessageContactInput" rows="4" placeholder="Enter your message"></textarea>
+              </div>
+              <button type="submit" class="btn btn-success w-100">Send Message</button>
+          </form>
+           
           
         </div>
       </div>
@@ -714,7 +821,6 @@
 
     <script src="../static/js/validation.js"></script>
     <script src="../static/js/apiService.js"></script>
-    <script src="../static/js/helpers.js"></script>
 
     <script>
         $(document).ready(function () {
@@ -803,48 +909,49 @@
                         alert('updating failed: ' + error.responseText);
                       }
                     );
-
-
-                // console.log(userData)
-                
-                // const validation = validateUserData(userData);
-                
-                // if (validation.isValid){
-                //     ApiService.signup(
-                //       userData,
-                //       function (response) {
-                //         // Success
-                //         saveUserToLocalStorage(response.user);
-                //         redirectTo("confirmEmail.html");
-                //       },
-                //       function (error) {
-                //         alert('Signup failed: ' + error.responseText);
-                //       }
-                //     );
-                //     console.log("yessss")
-                // }else{
-                //     alert("Invalid Information please check the console");
-                //     console.log(validation);
-                // }
-    
                 
               });
+            
 
+            // put user Information in contact Form
+            $("#userNameContactInput").val(user.firstName + " " + user.lastName);
+            $("#userEmailContactInput").val(user.email);
+
+            $('#contactForm').submit(function (e) {
+                e.preventDefault();
+                
+                // get the message and the user id
+
+                const userData = {
+                  user_id : getUser().id,
+                  message : $('#userMessageContactInput').val()
+                };
+                
+                // call the api service
+
+                ApiService.add_contact_message(
+                   userData,
+                      function (response) {
+                        // Success
+                        if(response.status == 201){
+                          alert("thank you for your message")
+                          window.location.reload();
+                        }
+                      },
+                      function (error) {
+                        alert("error");
+                      }
+                );
+
+              
+
+              });
+            
         });
+
       </script>
 
     
-<!-- <div id="google_translate_element" style="position: fixed; bottom: 10px; right: 10px; z-index: 9999;"></div>
-<script type="text/javascript">
-function googleTranslateElementInit() {
-  new google.translate.TranslateElement({
-    pageLanguage: 'en', // set your default language
-    includedLanguages: 'en,fr,ar', // the languages you want to support
-    layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-  }, 'google_translate_element');
-}
-</script>
-<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script> -->
 
 </body>
 </html>

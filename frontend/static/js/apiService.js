@@ -41,6 +41,9 @@ var ApiService = (function () {
     },
     is_volunteer : function (userData, onSuccess, onError){
       sendRequest('POST', '/user/is_volunteer', userData , onSuccess, onError)
-    }
+    },
+    add_contact_message : function (userData, onSuccess, onError){
+      sendRequest('POST', '/contact_messages', userData , onSuccess, onError)
+    },
   };
 })();
