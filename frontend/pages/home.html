@@ -22,6 +22,9 @@
 
     <link rel="stylesheet" href="../static/css/test.css">
     <script src="../static/js/helpers.js"></script>
+    <!-- PDF  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script> 
+
 
 </head>
 <body>
@@ -43,7 +46,7 @@
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="donateDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Donate</a>
                 <ul class="dropdown-menu" aria-labelledby="donateDropdown">
-                    <li><a onclick="donationSectionToggler(true)"  href="#donation-section-inalgeria" class="dropdown-item" >In khalil Algeria</a></li>
+                    <li><a onclick="donationSectionToggler(true)"  href="#donation-section-inalgeria" class="dropdown-item" >In Algeria</a></li>
                     <li><a onclick="donationSectionToggler(false)" href="#donation-section-outalgeria" class="dropdown-item" >Out Algeria</a></li>
                 </ul>
               </li>
@@ -299,323 +302,329 @@
 
 </section>
 
-<!--donate section-->
-
- <section id="donation-section-inalgeria" >
+<section id="donation-section-inalgeria">
   <div class="container">
-    <!-- Title -->
     <h2 class="text-center mb-4 section-title">Donate in Algeria</h2>
+    <p class="text-center mb-5 donation-intro">
+      Support local causes and make a difference in Algeria. Choose a donation type below.
+    </p>
 
-    <div class="text-center mb-5">
-      <p class=" donation-intro text">
-        Support local causes and make a difference in Algeria. Choose your preferred donation type below.
-      </p>
-    </div>
-    <!-- Donation Types -->
+    <!-- Donation Type Buttons -->
     <div class="row text-center mb-4">
       <div class="col-md-4">
-        <div class="donation-type-btn-wrapper">
-          <button class="donation-type-btn" data-type="monthly">
-            <h4>Monthly</h4>
-            <p>Contribute monthly to help Algerian communities.</p>
-          </button>
-        </div>
+        <button class="donation-type-btn donation-type-btn-in" data-type="monthly">
+          <h4>Monthly</h4>
+        </button>
       </div>
       <div class="col-md-4">
-        <div class="donation-type-btn-wrapper">
-          <button class="donation-type-btn" data-type="directed">
-            <h4>Directed</h4>
-            <p>Donate to a specific project or charity, like building a school or hospital...</p>
-          </button>
-        </div>
+        <button class="donation-type-btn donation-type-btn-in" data-type="directed">
+          <h4>Directed</h4>
+        </button>
       </div>
       <div class="col-md-4">
-        <div class="donation-type-btn-wrapper">
-          <button class="donation-type-btn" data-type="general">
-            <h4>General</h4>
-            <p>Your donation will be used where it's most needed.</p>
-          </button>
-        </div>
+        <button class="donation-type-btn donation-type-btn-in" data-type="general">
+          <h4>General</h4>
+        </button>
       </div>
     </div>
 
-    <!-- Monthly Donation (Hidden initially) -->
-    <div id="monthly-in" class="donation-section-in donation-section" style="display: none;">
-      <h4>Monthly Donation :</h4>
-      <br>
-      <div class="input-box">
-        <label for="email">Email:</label>
-        <input type="email" placeholder="write your email" required > 
-    </div>
+    <!-- Monthly Form -->
+    <div id="monthly-in" class="donation-section-in donation-section" style="display:none">
+      <form id="form-monthly-in">
+        <h4>Monthly Donation</h4>
+        <label>Email:</label>
+        <input name="email" type="email" class="donationEmail" required>
 
-      <div class="mb-3">
-        <label class="form-label">Donation Purpose:</label>
-        <select class="form-select">
+        <label>Purpose:</label>
+        <select name="purpose" class="form-select">
           <option>Orphan Sponsorship</option>
           <option>Support a Family</option>
           <option>Medical Supplies</option>
-          <option>No preference - Let the organization decide</option>
+          <option>No preference</option>
         </select>
-      </div>
 
-         <!-- Donation Amount -->
-         <div class="mb-4">
-          <label class="form-label"> Choose Donation Amount:</label>
-          <div class="d-flex gap-2 flex-wrap mb-2">
-            <button class="amount-btn" data-amount="500">500 DZD</button>
-            <button class="amount-btn" data-amount="1000">1000 DZD</button>
-            <button class="amount-btn" data-amount="20000">20000 DZD</button>
-          </div>
-          <input type="number" class="custom-amount-input" id="custom-amount" placeholder="Or enter a custom amount">
+        <label>Amount:</label>
+        <div class="d-flex gap-2 mb-2">
+          <button type="button" class="amount-btn" data-amount="500">500 DZD</button>
+          <button type="button" class="amount-btn" data-amount="1000">1000 DZD</button>
+          <button type="button" class="amount-btn" data-amount="20000">20000 DZD</button>
+        </div>
+        <input name="amount" type="number" class="custom-amount-input" placeholder="Custom amount">
+
+        <label>Payment Method:</label>
+        <select name="paymentMethod" class="form-select payment-method">
+          <option value="">-- Select --</option>
+          <option value="CCP">CCP</option>
+          <option value="Bank transfer">Bank transfer</option>
+        </select>
+
+        <div class="payment-info ccp-info" style="display:none">
+          <input name="ccpAccount" placeholder="CCP Account Number">
+          <input name="ccpName" placeholder="CCP Account Name">
+        </div>
+        <div class="payment-info bank-info" style="display:none">
+          <input name="bankAccount" placeholder="Bank Account Name">
         </div>
 
-       <!-- Payment Method -->
-       <div class="mb-4">
-        <label class="form-label">Choose Payment Method:</label>
-        <select class="form-select" id="payment-method">
-          <option value="">-- Select Payment Method --</option>
-          <option value="ccp">CCP (Postal Cheque) </option>
-          <option value="bank">Bank Transfer</option>
-        </select>
-      </div>
-
-      <!-- CCP Info -->
-      <div id="ccp-info" class="payment-info">
-          <input type="text" class="form-control mb-2" placeholder="CCP Account Number">
-          <input type="text" class="form-control mb-2" placeholder="CCP Account Name">
-      </div>
-      <!-- bank Info -->
-      <div id="bank-info" class="payment-info">
-          <input type="text" class="form-control mb-2" placeholder="Bank Account Name">
-      </div>
-
-      <!-- Donate Button -->
-      <div class="text-center mt-4">
-        <button class="donate-btn">Donate Now</button>
-      </div>
+        <button type="submit" class="donate-btn">Donate Now</button>
+      </form>
     </div>
 
-    <!-- Targeted and General Donation (Hidden initially) -->
-    <div id="directed-in" class="donation-section-in donation-section" style="display: none;">
-      <!-- Content for targeted donation can go here -->
-      <h4>Directed Donation :</h4>
-      <br>
-      <div class="input-box">
-        <label for="email">Email:</label>
-        <input type="email" placeholder="write your email" required > 
-    </div>
+    <!-- Directed Form -->
+    <div id="directed-in" class="donation-section-in donation-section" style="display:none">
+      <form id="form-directed-in">
+        <h4>Directed Donation</h4>
+        <label>Email:</label>
+        <input name="email" type="email" class="donationEmail" required>
 
-      <div class="mb-3">
-        <label class="form-label">Donation Purpose:</label>
-        <select class="form-select">
-           <option value="">-- Select Donation Purpose --</option>
+        <label>Purpose:</label>
+        <select name="purpose" class="form-select">
           <option>Feeding</option>
-          <option>EID sacrifice</option>
-          <option>Drilling wells</option>
-          <option>Mosques</option>
-          <option>hospitals</option>
+          <option>EID Sacrifice</option>
+          <option>Drilling Wells</option>
+          <option>Mosque Construction</option>
+          <option>Hospital Support</option>
         </select>
-      </div>
 
-         <!-- Donation Amount -->
-         <div class="mb-4">
-          <label class="form-label"> Choose Donation Amount:</label>
-          <div class="d-flex gap-2 flex-wrap mb-2">
-            <button class="amount-btn" data-amount="500">500 DZD</button>
-            <button class="amount-btn" data-amount="1000">1000 DZD</button>
-            <button class="amount-btn" data-amount="20000">20000 DZD</button>
-          </div>
-          <input type="number" class="custom-amount-input" id="custom-amount" placeholder="Or enter a custom amount">
+        <label>Amount:</label>
+        <div class="d-flex gap-2 mb-2">
+          <button type="button" class="amount-btn" data-amount="500">500 DZD</button>
+          <button type="button" class="amount-btn" data-amount="1000">1000 DZD</button>
+          <button type="button" class="amount-btn" data-amount="20000">20000 DZD</button>
         </div>
+        <input name="amount" type="number" class="custom-amount-input" placeholder="Custom amount">
 
-       <!-- Payment Method -->
-       <div class="mb-3">
-        <label class="form-label">Choose Payment Method:</label>
-        <select class="form-select" id="payment-method">
-          <option value="">-- Select Payment Method --</option>
-          <option value="ccp">CCP (Postal Cheque) </option>
-          <option value="bank">Bank Transfer</option>
+        <label>Payment Method:</label>
+        <select name="paymentMethod" class="form-select payment-method">
+          <option value="">-- Select --</option>
+          <option value="CCP">CCP</option>
+          <option value="Bank transfer">Bank transfer</option>
         </select>
-      </div>
 
-      <!-- CCP Info -->
-      <div id="ccp-info" class="payment-info">
-        <div class="mb-2">
-          <input type="text" class="form-control" placeholder="CCP Account Number">
+        <div class="payment-info ccp-info" style="display:none">
+          <input name="ccpAccount" placeholder="CCP Account Number">
+          <input name="ccpName" placeholder="CCP Account Name">
         </div>
-        <div class="mb-2">
-          <input type="text" class="form-control" placeholder="CCP Account Name">
-        </div>  
-      </div>
-      <!-- bank Info -->
-      <div id="bank-info" class="payment-info">
-        <div class="mb-2">
-          <input type="text" class="form-control" placeholder="Bank Account Name">
+        <div class="payment-info bank-info" style="display:none">
+          <input name="bankAccount" placeholder="Bank Account Name">
         </div>
-      </div>
 
-      <!-- Donate Button -->
-      <div class="text-center mt-4">
-        <button class="donate-btn">Donate Now</button>
-      </div>
+        <button type="submit" class="donate-btn">Donate Now</button>
+      </form>
     </div>
-        
 
-    <div id="general-in" class="donation-section-in donation-section" style="display: none;">
-      <!-- Content for general donation can go here -->
-      <h4>General Donation :</h4>
-      <br>
-      <div class="input-box">
-        <label for="email">Email:</label>
-        <input type="email" placeholder="write your email" required > 
-    </div>
-         <!-- Donation Amount -->
-         <div class="mb-4">
-          <label class="form-label"> Choose Donation Amount:</label>
-          <div class="d-flex gap-2 flex-wrap mb-2">
-            <button class="amount-btn" data-amount="500">500 DZD</button>
-            <button class="amount-btn" data-amount="1000">1000 DZD</button>
-            <button class="amount-btn" data-amount="20000">20000 DZD</button>
-          </div>
-          <input type="number" class="custom-amount-input" id="custom-amount" placeholder="Or enter a custom amount">
+    <!-- General Form -->
+    <div id="general-in" class="donation-section-in donation-section" style="display:none">
+      <form id="form-general-in">
+        <h4>General Donation</h4>
+        <label>Email:</label>
+        <input name="email" type="email" class="donationEmail" required>
+
+        <label>Amount:</label>
+        <div class="d-flex gap-2 mb-2">
+          <button type="button" class="amount-btn" data-amount="500">500 DZD</button>
+          <button type="button" class="amount-btn" data-amount="1000">1000 DZD</button>
+          <button type="button" class="amount-btn" data-amount="20000">20000 DZD</button>
         </div>
+        <input name="amount" type="number" class="custom-amount-input" placeholder="Custom amount">
 
-       <!-- Payment Method -->
-       <div class="mb-3">
-        <label class="form-label">Choose Payment Method:</label>
-        <select class="form-select" id="payment-method">
-          <option value="">-- Select Payment Method --</option>
-          <option value="ccp">CCP (Postal Cheque) </option>
-          <option value="bank">Bank Transfer</option>
+        <label>Payment Method:</label>
+        <select name="paymentMethod" class="form-select payment-method">
+          <option value="">-- Select --</option>
+          <option value="CCP">CCP</option>
+          <option value="Bank transfer">Bank transfer</option>
         </select>
-      </div>
 
-      <!-- CCP Info -->
-      <div id="ccp-info" class="payment-info">
-        <div class="mb-2">
-          <input type="text" class="form-control" placeholder="CCP Account Number">
+        <div class="payment-info ccp-info" style="display:none">
+          <input name="ccpAccount" placeholder="CCP Account Number">
+          <input name="ccpName" placeholder="CCP Account Name">
         </div>
-        <div class="mb-2">
-          <input type="text" class="form-control" placeholder="CCP Account Name">
-        </div>  
-      </div>
-      <!-- bank Info -->
-      <div id="bank-info" class="payment-info">
-        <div class="mb-2">
-          <input type="text" class="form-control" placeholder="Bank Account Name">
+        <div class="payment-info bank-info" style="display:none">
+          <input name="bankAccount" placeholder="Bank Account Name">
         </div>
-      </div>
 
-      <!-- Donate Button -->
-      <div class="text-center mt-4">
-        <button class="donate-btn">Donate Now</button>
-      </div>
-    </div>
+        <button type="submit" class="donate-btn">Donate Now</button>
+      </form>
     </div>
   </div>
 </section>
- 
-<!-- donate-out-algeria -->
-<section id="donation-section-outalgeria" style="display: none;">
-    <div class="container">
-      <h2 class=" section-title">Donate Out Algeria</h2>
-      <p class="text-center mb-5 lead donation-intro">
-        Your donation, no matter how small, can make a huge difference.  
-        <br>Choose the type of donation that suits you and start spreading hope today.
-      </p>
-      <div class="row text-center mb-4">
-        <div class="col-md-4">
-          <button class="donation-type-btn" data-type="monthly">
-            <h4>Monthly</h4>
-            <p>Every month, a portion of your donation will go to help a specific cause.</p>
-          </button>
-        </div>
-        <div class="col-md-4">
-          <button class="donation-type-btn" data-type="directed">
-            <h4>Directed</h4>
-            <p>Donate to a specific cause or charity, like building a school or hospital.</p>
-          </button>
-        </div>
-        <div class="col-md-4">
-          <button class="donation-type-btn" data-type="general">
-            <h4>General</h4>
-            <p>Your donation will be used where it's most needed.</p>
-          </button>
-        </div>
-      </div>
-      
-      
-      <div id="monthly-out" class="donation-section-out donation-section" style="display: none;">
-        <div class="donation-form-content">
-          <div class="mb-3">
-            <label class="form-label">Email</label>
-            <input type="email" class="form-select" placeholder="Enter your Email" required>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Select Beneficiary Country:</label>
-            <select class="form-select">
-              <option>Select</option>
-              <option>Palestine</option>
-              <option>Syria</option>
-              <option>Yemen</option>
-              <option>Sudan</option>
-              <option>Somalia</option>
-              <option>Libya</option>
-              <option>Bangladesh</option>
-              <option>Afghanistan</option>
-            </select>
-          </div>
-          <div class="mb-3 purpose-field">
-            <label class="form-label">Donation Purpose:</label>
-            <select class="form-select">
-              <option>Select</option>
-              <option>Orphan Sponsorship</option>
-              <option>Support a Family</option>
-              <option>Medical Supplies</option>
-              
-            </select>
-          </div>
-          <div class="mb-4">
-            <label class="form-label">Choose Donation Amount:</label>
-            <div class="d-flex gap-2 flex-wrap mb-2">
-              <button class="amount-btn" data-amount="500">500 DA</button>
-              <button class="amount-btn" data-amount="1000">1000 DA</button>
-              <button class="amount-btn" data-amount="10000">10000 DA</button>
-            </div>
-            <input type="number" class="custom-amount-input" placeholder="Or enter a custom amount" min="10">
-          </div>
-          <div class="mb-4">
-            <label class="form-label">Choose Payment Method:</label>
-            <select class="form-select payment-method">
-              <option value="">-- Select --</option>
-              <option value="paypal">PayPal</option>
-              <option value="ccp">ِCCP</option>
-              <option value="bank">ِBank Card</option>
-            </select>
-          </div>
-          <div class="payment-info paypal-info">
-            <input type="text" class="form-control mb-2" placeholder="Card Number">
-            <input type="text" class="form-control mb-2" placeholder="Security Code (CVV)">
-            <input type="text" class="form-control mb-2" placeholder="Expiration Date">
-          </div>
-          <div class="payment-info ccp-info">
-            <input type="text" class="form-control mb-2" placeholder="CCP Account Number">
-          </div>
-          <div class="payment-info bank-info">
-            <input type="text" class="form-control mb-2" placeholder="Card Number">
-            <input type="text" class="form-control mb-2" placeholder="Security Code (CVV)">
-            <input type="text" class="form-control mb-2" placeholder="Expiration Date">
-          </div>
-          <div class="text-center mt-4">
-            <button class="donate-btn">Donate Now</button>
-          </div>
-        </div>
-      </div>
 
-      <div id="directed-out" class="donation-section-out donation-section" style="display: none;"></div>
-      <div id="general-out" class="donation-section-out donation-section" style="display: none;"></div>
+<section id="donation-section-outalgeria" style="display:none">
+  <div class="container">
+    <h2 class="section-title">Donate Out Algeria</h2>
+    <p class="text-center mb-5 donation-intro">
+      Your donation can make a huge difference. Choose the type of donation…
+    </p>
+
+    <!-- Buttons -->
+    <div class="row text-center mb-4">
+      <div class="col-md-4">
+        <button class="donation-type-btn donation-type-btn-out" data-type="monthly">
+          <h4>Monthly</h4>
+        </button>
+      </div>
+      <div class="col-md-4">
+        <button class="donation-type-btn donation-type-btn-out" data-type="directed">
+          <h4>Directed</h4>
+        </button>
+      </div>
+      <div class="col-md-4">
+        <button class="donation-type-btn donation-type-btn-out" data-type="general">
+          <h4>General</h4>
+        </button>
+      </div>
     </div>
+
+    <!-- Monthly Out Form -->
+    <div id="monthly-out" class="donation-section-out donation-section" style="display:none">
+      <form id="form-monthly-out">
+        <h4>Monthly Donation</h4>
+        <label>Email:</label>
+        <input name="email" type="email" class="form-control donationEmail" required>
+
+        <label>Beneficiary Country:</label>
+        <select name="country" class="form-select">
+          <option value="">Select</option>
+          <option>Palestine</option>
+          <option>Syria</option>
+          <option>Yemen</option>
+          <option>Sudan</option>
+          <option>Somalia</option>
+          <option>Libya</option>
+        </select>
+
+        <label>Amount:</label>
+        <div class="d-flex gap-2 mb-2">
+          <button type="button" class="amount-btn" data-amount="500">500 DA</button>
+          <button type="button" class="amount-btn" data-amount="1000">1000 DA</button>
+          <button type="button" class="amount-btn" data-amount="10000">10000 DA</button>
+        </div>
+        <input name="amount" type="number" class="custom-amount-input" placeholder="Custom amount">
+
+        <label>Payment Method:</label>
+        <select name="paymentMethod" class="form-select payment-method">
+          <option value="">-- Select --</option>
+          <option value="paypal">PayPal</option>
+          <option value="ccp">CCP</option>
+          <option value="bank">Bank Card</option>
+        </select>
+
+        <div class="payment-info paypal-info" style="display:none">
+          <input name="cardNumber" class="form-control mb-2" placeholder="Card Number">
+          <input name="cardCvv" class="form-control mb-2" placeholder="Security Code (CVV)">
+          <input name="cardExpiry" class="form-control mb-2" placeholder="Expiration Date">
+        </div>
+        <div class="payment-info ccp-info" style="display:none">
+          <input name="ccpAccount" class="form-control mb-2" placeholder="CCP Account Number">
+          <input name="ccpName" class="form-control mb-2" placeholder="CCP Account Name">
+        </div>
+        <div class="payment-info bank-info" style="display:none">
+          <input name="bankAccount" class="form-control mb-2" placeholder="Bank Account Name">
+        </div>
+
+        <button type="submit" class="donate-btn">Donate Now</button>
+      </form>
+    </div>
+
+    <!-- Directed Out Form -->
+    <div id="directed-out" class="donation-section-out donation-section" style="display:none">
+      <form id="form-directed-out">
+        <h4>Directed Donation</h4>
+        <label>Email:</label>
+        <input name="email" type="email" class="form-control donationEmail" required>
+
+        <label>Country:</label>
+        <select name="country" class="form-select">
+          <option value="">-- Select --</option>
+          <option>Palestine</option>
+          <option>Syria</option>
+          <option>Yemen</option>
+        </select>
+
+        <label>Purpose:</label>
+        <select name="purpose" class="form-select">
+          <option value="">-- Select --</option>
+          <option>Orphan Sponsorship</option>
+          <option>Medical Supplies</option>
+        </select>
+
+        <label>Amount:</label>
+        <div class="d-flex gap-2 mb-2">
+          <button type="button" class="amount-btn" data-amount="500">500 DA</button>
+          <button type="button" class="amount-btn" data-amount="1000">1000 DA</button>
+          <button type="button" class="amount-btn" data-amount="10000">10000 DA</button>
+        </div>
+        <input name="amount" type="number" class="custom-amount-input" placeholder="Custom amount">
+
+        <label>Payment Method:</label>
+        <select name="paymentMethod" class="form-select payment-method">
+          <option value="">-- Select --</option>
+          <option value="paypal">PayPal</option>
+          <option value="ccp">CCP</option>
+          <option value="bank">Bank Card</option>
+        </select>
+
+        <div class="payment-info paypal-info" style="display:none">
+          <input name="cardNumber" class="form-control mb-2" placeholder="Card Number">
+          <input name="cardCvv" class="form-control mb-2" placeholder="Security Code (CVV)">
+          <input name="cardExpiry" class="form-control mb-2" placeholder="Expiration Date">
+        </div>
+        <div class="payment-info ccp-info" style="display:none">
+          <input name="ccpAccount" class="form-control mb-2" placeholder="CCP Account Number">
+          <input name="ccpName" class="form-control mb-2" placeholder="CCP Account Name">
+        </div>
+        <div class="payment-info bank-info" style="display:none">
+          <input name="bankAccount" class="form-control mb-2" placeholder="Bank Account Name">
+        </div>
+
+        <button type="submit" class="donate-btn">Donate Now</button>
+      </form>
+    </div>
+
+    <!-- General Out Form -->
+    <div id="general-out" class="donation-section-out donation-section" style="display:none">
+      <form id="form-general-out">
+        <h4>General Donation</h4>
+        <label>Email:</label>
+        <input name="email" type="email" class="form-control donationEmail" required>
+
+        <label>Amount:</label>
+        <div class="d-flex gap-2 mb-2">
+          <button type="button" class="amount-btn" data-amount="500">500 DA</button>
+          <button type="button" class="amount-btn" data-amount="1000">1000 DA</button>
+          <button type="button" class="amount-btn" data-amount="10000">10000 DA</button>
+        </div>
+        <input name="amount" type="number" class="custom-amount-input" placeholder="Custom amount">
+
+        <label>Payment Method:</label>
+        <select name="paymentMethod" class="form-select payment-method">
+          <option value="">-- Select --</option>
+          <option value="paypal">PayPal</option>
+          <option value="ccp">CCP</option>
+          <option value="bank">Bank Card</option>
+        </select>
+
+        <div class="payment-info paypal-info" style="display:none">
+          <input name="cardNumber" class="form-control mb-2" placeholder="Card Number">
+          <input name="cardCvv" class="form-control mb-2" placeholder="Security Code (CVV)">
+          <input name="cardExpiry" class="form-control mb-2" placeholder="Expiration Date">
+        </div>
+        <div class="payment-info ccp-info" style="display:none">
+          <input name="ccpAccount" class="form-control mb-2" placeholder="CCP Account Number">
+        </div>
+        <div class="payment-info bank-info" style="display:none">
+          <input name="bankCard" class="form-control mb-2" placeholder="Bank Account Name">
+        </div>
+
+        <button type="submit" class="donate-btn">Donate Now</button>
+      </form>
+    </div>
+
+  </div>
 </section>
+
+
+
 
    <!--volunteering section-->
 <section class="volateering-section" id="volunteering">
@@ -812,9 +821,6 @@
   </div>
 </section>
 
-
-
- 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script src="../static/js/dou.js"></script>
@@ -942,10 +948,10 @@
                         alert("error");
                       }
                 );
-
-              
-
               });
+
+              // fill all donation email input : 
+              $('.donationEmail').val(getUser().email);
             
         });
 
