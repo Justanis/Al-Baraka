@@ -25,10 +25,16 @@ def create_user():
 
     if User.ValidateUserData(userData):
         confirmationCode = generate_confirmation_code()
-        new_user = User(userName=userData['userName'],
-                        email=userData['email'],
+        new_user = User(
+                        firstName = userData['firstName'],
+                        lastName = userData['lastName'],
+                        userName=userData['userName'],
+                        email=userData['email'], 
                         password=userData['password'],
-                        confirmationCode = confirmationCode)
+                        phone = userData['phone'],
+                        age = userData['age'],
+                        confirmationCode = confirmationCode
+                        )
         db.session.add(new_user)
         db.session.commit()
 
@@ -72,10 +78,12 @@ def update_user(user_id):
     data = request.get_json()
     user = User.query.get_or_404(user_id)
     
-    if 'username' in data:
-        user.username = data['username']
-    if 'email' in data:
-        user.email = data['email']
+    if 'city' in data:
+        user.city = data['city']
+    if 'street' in data:
+        user.street = data['street']
+    if 'gender' in data:
+        user.gender = data['gender']
     
     db.session.commit()
     return jsonify(user.to_dict())
@@ -176,3 +184,44 @@ def delete_volunteer(volunteer_id):
 #             'status' : 401,
 #             'error': "Invalid Informations" ,
 #         })
+
+@api_bp.route('/volunteer', methods=['POST'])
+def add_volunteer():
+    data = request.get_json() or {}
+    
+    user_id = data.get('user_id')
+    if not user_id:
+        return jsonify({
+            'status': 400,
+            'error': "Missing required field: user_id"
+        }), 400
+    
+    resp = Volunteer(
+        user_id=user_id,
+        firstResponse = data.get('firstResponse'),
+        secondResponse = data.get('secondResponse')
+    )
+
+    db.session.add(resp)
+    db.session.commit()
+
+    return jsonify({
+        'status': 201,
+        'user_response': resp.to_dict()
+    }), 201
+
+@api_bp.route('/user/is_volunteer', methods=['POST'])
+def check_volunteer():
+    data = request.get_json()
+
+    user = User.query.get(data['user_id'])
+    if user.volunteer:
+        return jsonify({
+            'status': 200,
+            'is_volunteer': True
+        })
+    else : 
+        return jsonify({
+            'status': 200,
+            'is_volunteer': False
+        })
