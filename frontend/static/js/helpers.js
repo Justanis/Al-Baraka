@@ -1,3 +1,4 @@
+
 // Redirect to another HTML page
 function redirectTo(page) {
   window.location.href = page;
@@ -13,12 +14,12 @@ function getUser() {
   return JSON.parse(localStorage.getItem("user"));
 }
 
-
-
 // Check if user is logged in
 function isAuthenticated() {
   return localStorage.getItem('user') !== null;
 }
+
+
 
 function isConfirmed(){
   if(getUser().isConfirmed == 0){

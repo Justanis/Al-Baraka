@@ -26,12 +26,12 @@
                 </div> -->
                 <div class="input-box">
                   <span class="icon"><ion-icon name="person"></ion-icon></span>
-                  <input type="text" required>
+                  <input id="firstNameInput" type="text" required>
                   <label>firstName</label>
               </div>
               <div class="input-box">
                 <span class="icon"><ion-icon name="person"></ion-icon></span>
-                <input type="text" required>
+                <input id="lastNameInput" type="text" required>
                 <label>lastName</label>
             </div>
                 <div class="input-box">
@@ -53,12 +53,12 @@
                 
                 <div class="input-box">
                     <span class="icon"><ion-icon name="call"></ion-icon></span>
-                    <input type="number" required>
+                    <input id="phoneNumberInput" type="number" required>
                     <label>PhoneNumber</label>
                 </div>
                 <div class="input-box">
                     <span class="icon"><ion-icon name="calendar"></ion-icon></span>
-                    <input type="date" required>
+                    <input id="ageInput" type="date" required>
                     <label></label>
                 </div>
                 
@@ -91,15 +91,24 @@
               // Example: Handle signup form submission
               $('#signupForm').submit(function (e) {
                 e.preventDefault();
-            
+                
+                const birthDateAsString = $('#ageInput').val();
+                const birthDate   = new Date(birthDateAsString);
+                const today = new Date();
+
+                let age =  today.getFullYear() - birthDate.getFullYear() -1;
                 const userData = {
+                  firstName : $('#firstNameInput').val(),
+                  lastName : $('#lastNameInput').val(),
+                  phone : $('#phoneNumberInput').val(),
+                  age : age,
                   userName: $('#userNameInput').val(),
                   email: $('#emailInput').val(),
                   password: $('#passwordInput').val()
                 };
 
                 console.log(userData)
-                //validation
+                
                 const validation = validateUserData(userData);
                 
                 if (validation.isValid){

@@ -32,6 +32,15 @@ var ApiService = (function () {
     // For example, fetching user profile or logging out
     confirmEmail : function (userData, onSuccess, onError){
       sendRequest('POST', '/users/confirm', userData, onSuccess, onError)
+    },
+    update_user : function (user_id, userData, onSuccess, onError){
+      sendRequest('PUT', '/users/'+ user_id, userData, onSuccess, onError)
+    },
+    add_volunteer : function (volunteerData, onSuccess, onError){
+      sendRequest('POST', '/volunteer', volunteerData, onSuccess, onError)
+    },
+    is_volunteer : function (userData, onSuccess, onError){
+      sendRequest('POST', '/user/is_volunteer', userData , onSuccess, onError)
     }
   };
 })();
